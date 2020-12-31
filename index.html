@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <ul id="lista"></ul>
+        <button id="boton">Click Me!</button>
+       <script>
+          const vBoton = document.getElementById("boton");
+           vBoton.addEventListener("click",()=> 
+            {
+                let xhr
+                //Validar si el navegador soporta XMLHttpRequest
+                if(window.XMLHttpRequest) 
+                    {
+                        xhr=new XMLHttpRequest();
+                    }else
+                    {xhr= new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+
+                //Abrir la conexion al end point 
+                xhr.open("GET","https://jsonplaceholder.typicode.com/users");
+
+                //Asociar un controlador de envento al evento Cargar del objeto
+                xhr.addEventListener("load",(data)=>{
+                    //Obtener el arreglo de objetos  desde la variable data, antes se transforma el dato a Json 
+                    const vDataJson = JSON.parse(data.target.response);
+                    //Obtener el objeto padre LISTA
+                    const vLista = document.getElementById("lista");
+
+                    //Iterar sobre los elementos del arreglo JSON
+                    for (const objJson of vDataJson) 
+                            {
+                                //Crear un elemento de la lista 
+                                const vElemLista = document.createElement("li");      
+                                vElemLista.textContent =`${objJson.id} => ${objJson.name}`;
+                                vLista.appendChild(vElemLista);
+                            }                         
+                    } ); //Fin del manejador de evento en el AddEventLister del objeto xhr
+
+                   //Enviar la peticion al servidor
+                   xhr.send();   
+
+             }); //Fin del manejador de evento para el Boton en el envento Click
+     
+
+       </script>
+    </div>
+    
+</body>
+</html>
